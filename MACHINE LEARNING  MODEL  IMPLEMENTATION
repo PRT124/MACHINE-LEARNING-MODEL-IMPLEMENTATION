@@ -1,0 +1,34 @@
+# Import libraries
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn import metrics
+
+# Sample Dataset
+emails = [
+    ('Free entry in 2 a wkly comp', 'spam'),
+    ('Call now to win prize', 'spam'),
+    ('Are we meeting tomorrow?', 'ham'),
+    ('I have sent you the report', 'ham'),
+    ('Win cash prize now!!!', 'spam'),
+    ('Let's catch up over lunch', 'ham')
+]
+
+texts, labels = zip(*emails)
+
+# Convert text to feature vectors
+vectorizer = CountVectorizer()
+X = vectorizer.fit_transform(texts)
+
+# Train-test split
+X_train, X_test, y_train, y_test = train_test_split(X, labels, test_size=0.3, random_state=42)
+
+# Model
+model = MultinomialNB()
+model.fit(X_train, y_train)
+
+# Predict
+y_pred = model.predict(X_test)
+
+# Accuracy
+print("Accuracy:", metrics.accuracy_score(y_test, y_pred))
